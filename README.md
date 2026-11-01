@@ -25,10 +25,14 @@ This starter intentionally includes several issues for the candidate to evaluate
 ## Run locally
 
 ```bash
+cp .env.example .env   # then set real values
 docker compose up --build
 ```
 
 Then open <http://localhost:8000>.
+
+The build installs Python packages from Chainguard Libraries and needs credentials in `~/.netrc`. See
+[WRITEUP.md](WRITEUP.md#running-it-locally) for the setup and for building with Podman.
 
 ## ⚠️ Chainguard Libraries Access
 

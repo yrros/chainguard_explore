@@ -1,0 +1,8 @@
+# Credentials: never commit these
+# Podman writes temporary copies of build secrets (e.g. ~/.netrc) into the project dir
+podman-build-secret-*
+.netrc
+.env
+
+# Editor swap files
+*.swp

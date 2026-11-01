@@ -48,4 +48,6 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8000
 
-ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
+# --no-control-socket: gunicorn 25.1+ otherwise opens a runtime management socket
+# in $HOME, which this app doesn't need.
+ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "--no-control-socket", "app:app"]

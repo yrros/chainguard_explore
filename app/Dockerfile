@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 # Build stage: the -dev variant has a shell, pip, apk and a compiler.
 FROM cgr.dev/chainguard/python:latest-dev AS build
 

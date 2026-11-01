@@ -3,27 +3,40 @@ services:
   web:
     build:
       context: ./app
+      secrets:
+        - netrc
     ports:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/todos
       SECRET_KEY: not-so-secret
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./app:/app
 
   db:
-    image: postgres:15
+    image: cgr.dev/chainguard/postgres:latest
     ports:
       - "5432:5432"
     environment:
       POSTGRES_DB: todos
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "todos"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Chainguard's postgres image runs init scripts from here, not /docker-entrypoint-initdb.d
+      - ./db/init.sql:/var/lib/postgres/initdb/init.sql
 
 volumes:
   postgres_data:
+
+secrets:
+  netrc:
+    file: ${HOME}/.netrc
